@@ -2,6 +2,14 @@
 
 Tested on Ubuntu 16.04 LTS
 
+## Install toolchain for compiling for 32-bit
+
+Since we are smashing the stack like it is 1995 anyway.
+
+```
+sudo apt-get install libc6-dev-i386
+```
+
 ## Enable core dumps
 
 First change the core file block-size limit from its default of 0
