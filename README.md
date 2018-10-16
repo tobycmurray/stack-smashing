@@ -81,6 +81,10 @@ Note `x/4xw` means print 4 words at the memory addressed by the stack
 pointer. In any case, note that the stack pointer (i.e. saved return
 address) is now 0x41414141.
 
+You can examine the contents of the registers using `info registers` in
+gdb.
+
+
 ## Find the input that ends up being in the pc
 
 The stack buffer is 32 bytes long. The return address turns out to live
