@@ -52,6 +52,35 @@ Program terminated with signal SIGSEGV, Segmentation fault.
 Note that the pc is at 0x41414141 ('AAAA') meaning that our input has eneded
 up in the pc, so we have control over it.
 
+## Using gdb to understand what is going on
+
+To see how that happens, use gdb to set a breakpoint at the point at which
+`copy_name` returns.
+
+Use `list` to see source code and note that return instruction is on line 17.
+
+```
+(gdb) b stackme.c:17
+Breakpoint 1 at 0x804857b: file stackme.c, line 17.
+(gdb) run < input.AAAA
+```
+
+Then when the breakpoint hits, note that we are not quite at the `ret`
+instruction yet by using `disassemble`.
+
+You can single-step by using `stepi` and `disassemble` to see the pc
+advance on each instruction until the `ret` is hit and then confirm the
+stack contents using the `x` instruction, at which point it looks like
+this:
+```
+(gdb) x/4xw $esp
+0xffffdb4c: 0x41414141	0x41414141	0x0000000a	0xf7fc55a0
+``
+
+Note `x/4xw` means print 4 words at the memory addressed by the stack
+pointer. In any case, note that the stack pointer (i.e. saved return
+address) is now 0x41414141.
+
 ## Find the input that ends up being in the pc
 
 The stack buffer is 32 bytes long. The return address turns out to live
