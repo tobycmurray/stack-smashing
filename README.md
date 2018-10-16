@@ -57,24 +57,21 @@ up in the pc, so we have control over it.
 To see how that happens, use gdb to set a breakpoint at the point at which
 `copy_name` returns.
 
-Use `list` to see source code and note that return instruction is on line 17.
+Use `disassemble copy_name` to find the address of the `ret` instruction:
 
 ```
-(gdb) b stackme.c:17
-Breakpoint 1 at 0x804857b: file stackme.c, line 17.
-(gdb) run < input.AAAA
+(gdb) disassemble copy_name
+...
+0x08048581 <+50>:	ret
+(gdb) b *0x08048581
 ```
 
-Then when the breakpoint hits, note that we are not quite at the `ret`
-instruction yet by using `disassemble`.
-
-You can single-step by using `stepi` and `disassemble` to see the pc
-advance on each instruction until the `ret` is hit and then confirm the
+When the breakpointis hit,  then confirm the
 stack contents using the `x` instruction, at which point it looks like
 this:
 ```
 (gdb) x/4xw $esp
-0xffffdb4c: 0x41414141	0x41414141	0x0000000a	0xf7fc55a0
+0xffffceec: 0x41414141	0x41414141	0x0000000a	0xf7fb45a0
 ``
 
 Note `x/4xw` means print 4 words at the memory addressed by the stack
@@ -84,6 +81,11 @@ address) is now 0x41414141.
 You can examine the contents of the registers using `info registers` in
 gdb.
 
+## gef
+
+Note that the `gef` tool gives very useful info when using gdb to examine
+the execution of binaries and has a number of useful tools for exploit
+development. See https://github.com/hugsy/gef
 
 ## Find the input that ends up being in the pc
 
