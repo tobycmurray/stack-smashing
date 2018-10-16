@@ -72,7 +72,7 @@ this:
 ```
 (gdb) x/4xw $esp
 0xffffceec: 0x41414141	0x41414141	0x0000000a	0xf7fb45a0
-``
+```
 
 Note `x/4xw` means print 4 words at the memory addressed by the stack
 pointer. In any case, note that the stack pointer (i.e. saved return
